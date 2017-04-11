@@ -2,10 +2,11 @@ package main
 
 import "fmt"
 
-type StackByArray []interface{}
+// 用数组实现stack几乎是性能最优的方式
+type StackBySlice []interface{}
 
 func main() {
-	stack := new(StackByArray)
+	stack := new(StackBySlice)
 	fmt.Println(stack.IsEmpty())
 	stack.Push("a")
 	stack.Push("a")
@@ -24,19 +25,19 @@ func main() {
 	//fmt.Println(stack.Size())
 }
 
-func (s StackByArray) IsEmpty() bool {
+func (s StackBySlice) IsEmpty() bool {
 	return len(s) == 0
 }
 
-func (s StackByArray) Size() int {
+func (s StackBySlice) Size() int {
 	return len(s)
 }
 
-func (s *StackByArray) Push(item interface{}) {
+func (s *StackBySlice) Push(item interface{}) {
 	*s = append(*s, item)
 }
 
-func (s *StackByArray) Pop() interface{} {
+func (s *StackBySlice) Pop() interface{} {
 	n := len(*s) - 1
 	result := (*s)[n]
 	*s = (*s)[:n]
