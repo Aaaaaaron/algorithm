@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 // 用链表实现队列几乎是最优的方式
 
@@ -29,8 +32,7 @@ func (q *Queue) enqueue(msg string) {
 		q.last.next = &newNode
 		q.last = &newNode
 	} else {
-		q.last = &Node{}
-
+		q.last = &Node{msg, nil}
 		q.first = q.last
 	}
 
@@ -38,6 +40,9 @@ func (q *Queue) enqueue(msg string) {
 }
 
 func (q *Queue) dequeue() string {
+	if q.first == nil {
+		log.Fatal("nil")
+	}
 	r := q.first.item
 	q.first = q.first.next
 	q.size--
@@ -50,6 +55,7 @@ func main() {
 	q.enqueue("b")
 	q.enqueue("c")
 	q.enqueue("d")
+	fmt.Println(q.dequeue())
 	fmt.Println(q.dequeue())
 	fmt.Println(q.dequeue())
 	fmt.Println(q.dequeue())
