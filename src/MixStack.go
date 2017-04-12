@@ -39,21 +39,27 @@ func judge(input [10]int, raw [10]int) {
 	//rawTop := 0
 	for i := 0; i < 10; i++ {
 		stack.Push(raw[i])
-		fmt.Println("inputTop ", inputTop)
+		fmt.Println("push raw",raw[i])
 		for stack.Top() == input[inputTop] {
 			fmt.Println("top and input", stack.Top(), input[inputTop])
 			fmt.Println("Pop ", stack.Pop())
 			inputTop++
+			fmt.Println("inputTop ", inputTop)
+			if stack.Size() == 0 {
+				break
+			}
 		}
 	}
-	fmt.Println(inputTop)
+	fmt.Println("end",inputTop)
 }
 
 func main() {
-	input1 := [10]int{4, 3, 2, 1, 0, 9, 8, 7, 6, 5}
-	//input2 := [10]int{4, 3, 2, 1, 0, 9, 8, 7, 6, 5}
-	raw := [10]int{0, 1, 2, 3, 4, 5, 6, 6, 7, 8}
-	judge(input1, raw)
+	//input := [10]int{4, 3, 2, 1, 0, 9, 8, 7, 6, 5}
+	//input := [10]int{4, 6, 8, 7, 5, 3, 2, 9, 0, 1}
+	//input := [10]int{2, 5, 6, 7, 4, 8, 9, 3, 1, 0}
+	input := [10]int{2, 1, 4, 3, 6, 5, 8, 7, 9, 0}
+	raw := [10]int{0, 1, 2, 3, 4, 5, 6,7, 8, 9}
+	judge(input, raw)
 	//stack := new(Stack)
 	//stack.Push("a")
 	//stack.Push("a")
