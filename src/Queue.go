@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"log"
 )
 
@@ -49,15 +49,15 @@ func (q *Queue) dequeue() string {
 	return r
 }
 
-func main() {
-	var q Queue
-	q.enqueue("a")
-	q.enqueue("b")
-	q.enqueue("c")
-	q.enqueue("d")
-	fmt.Println(q.dequeue())
-	fmt.Println(q.dequeue())
-	fmt.Println(q.dequeue())
-	fmt.Println(q.dequeue())
-	fmt.Println(q.dequeue())
-}
+//func main() {
+//	var q Queue
+//	q.enqueue("a")
+//	q.enqueue("b")
+//	q.enqueue("c")
+//	q.enqueue("d")
+//	fmt.Println(q.dequeue())
+//	fmt.Println(q.dequeue())
+//	fmt.Println(q.dequeue())
+//	fmt.Println(q.dequeue())
+//	fmt.Println(q.dequeue())
+//}
