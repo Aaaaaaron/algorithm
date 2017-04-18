@@ -1,10 +1,7 @@
 package main
 
-import "net/http"
-
 func reverseIterative(first *Node) *Node {
 	reverseFirst := &Node{}
-	req http.NewRequest()
 	for first != nil {
 		second := first.next
 		first.next = reverseFirst
