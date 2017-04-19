@@ -25,7 +25,7 @@ func insertAtHead(value string) {
 	first = node
 }
 
-func delAtHead(value string) {
+func delAtHead() {
 	if first == nil {
 		log.Fatal("list nil")
 	}
@@ -51,7 +51,7 @@ func insertAtTail(value string) {
 	last = node
 }
 
-func delAtTail(value string, first *DoubleNode) {
+func delAtTail() {
 	if last == nil {
 		log.Fatal("list nil")
 	}
@@ -83,19 +83,18 @@ func main() {
 	insertAtTail("1")
 	insertAtTail("2")
 	insertAtTail("3")
-	insertAtTail("4")
-	insertAtTail("5")
-	insertAtTail("6")
-	insertAtTail("7")
 	insertAtHead("-1")
 	insertAtHead("-2")
 	insertAtHead("-3")
-	fmt.Println(first.item)
-	fmt.Println(first.next.item)
-	fmt.Println(first.next.next.item)
-	fmt.Println(first.next.next.next.item)
-	fmt.Println(first.next.next.next.next.item)
-	fmt.Println(first.next.next.next.next.next.item)
-	fmt.Println(first.next.next.next.next.next.next.pre.pre.item)
+	delAtHead()
+	delAtHead()
+	delAtHead()
+	delAtTail()
+	delAtTail()
+	for first != nil {
+		fmt.Println(first.item)
+		first = first.next
+	}
+	//fmt.Println(first.next.next.next.next.next.next.pre.pre.item)
 	//fmt.Println(first.item)
 }
