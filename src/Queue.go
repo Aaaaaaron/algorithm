@@ -7,10 +7,10 @@ import (
 
 // 用链表实现队列几乎是最优的方式
 
-type Node struct {
-	item string
-	next *Node
-}
+//type Node struct {
+//	item string
+//	next *Node
+//}
 
 type Queue struct {
 	first *Node

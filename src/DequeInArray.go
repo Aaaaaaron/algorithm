@@ -11,7 +11,7 @@ type Deque struct {
 	tail int
 }
 
-func (deque *Deque) LPush(value string) { // add first
+func (deque *Deque) LPush(value string) { // add firstN
 	deque.head = (deque.head - 1) % len(deque.item)
 	if deque.head < 0 { // head = -1
 		deque.head += len(deque.item)

@@ -95,6 +95,6 @@ func main() {
 		fmt.Println(first.item)
 		first = first.next
 	}
-	//fmt.Println(first.next.next.next.next.next.next.pre.pre.item)
-	//fmt.Println(first.item)
+	//fmt.Println(firstN.next.next.next.next.next.next.pre.pre.item)
+	//fmt.Println(firstN.item)
 }
