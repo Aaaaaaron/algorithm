@@ -2,42 +2,42 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"sync"
 	"time"
 )
 
 type RingBuffer struct {
-	elements  [4]string
-	writeOps  int //用channel的话 把这两个合并?
-	readOps   int
-	capacityC chan int
-	timeout   <-chan time.Time
+	elements [4]string
+	writeOps int //用channel的话 把这两个合并?
+	readOps  int
+	cond     sync.Cond
 }
 
 func (rf *RingBuffer) Put(item string) {
-	select {
-	case rf.capacityC <- 1:
-		rf.elements[rf.writeOps] = item
-		fmt.Print("put posi:", rf.writeOps, " ,item ", item)
-		rf.writeOps = (rf.writeOps + 1) % len(rf.elements)
-		fmt.Println("; now write posi:", rf.writeOps)
-	case <-rf.timeout:
-		log.Fatal("put time out")
+	rf.cond.L.Lock()
+	if rf.isFull() {
+		rf.cond.Wait()
 	}
+	rf.elements[rf.writeOps] = item
+	fmt.Print("put posi:", rf.writeOps, " ,item ", item)
+	rf.writeOps = (rf.writeOps + 1) % len(rf.elements)
+	fmt.Println("; now write posi:", rf.writeOps)
+	rf.cond.Signal()
+	rf.cond.L.Unlock()
 }
 
 func (rf *RingBuffer) Take() string {
-	select {
-	case <-rf.capacityC:
-		result := rf.elements[rf.readOps]
-		fmt.Print("take:", result)
-		rf.readOps = (rf.readOps + 1) % len(rf.elements)
-		fmt.Println("; now read posi:", rf.readOps)
-		return result
-	case <-rf.timeout:
-		log.Fatal("take time out")
+	rf.cond.L.Lock()
+	if rf.isEmpty() {
+		rf.cond.Wait()
 	}
-	return ""
+	result := rf.elements[rf.readOps]
+	fmt.Print("take:", result)
+	rf.readOps = (rf.readOps + 1) % len(rf.elements)
+	fmt.Println("; now read posi:", rf.readOps)
+	rf.cond.Signal()
+	rf.cond.L.Unlock()
+	return result
 }
 
 func (rf *RingBuffer) isFull() bool { // mutex style
@@ -50,8 +50,9 @@ func (rf *RingBuffer) isEmpty() bool { // mutex style
 
 func main() {
 	var e [4]string
-	c := make(chan int, 3)
-	rf := RingBuffer{e, 0, 0, c, time.After(10 * time.Second)}
+	var mutex sync.Mutex
+	c := sync.NewCond(&mutex)
+	rf := RingBuffer{e, 0, 0, *c}
 	go func() {
 		rf.Put("1")
 		rf.Put("2")
@@ -69,15 +70,15 @@ func main() {
 		rf.Take()
 		rf.Take()
 		rf.Take()
-		time.Sleep(2 * time.Second)
+		time.Sleep(5 * time.Second)
 		rf.Take()
 		rf.Take()
 		rf.Take()
-		time.Sleep(2 * time.Second)
+		time.Sleep(5 * time.Second)
 		rf.Take()
 		rf.Take()
 		rf.Take()
-		time.Sleep(2 * time.Second)
+		time.Sleep(5 * time.Second)
 	}()
 	time.Sleep(10 * time.Minute)
 }
